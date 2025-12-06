@@ -7,14 +7,14 @@ api_key = os.getenv("TOKEN")
 
 
 def get_games_list():
-    params = {
+    payload = {
         "key": api_key,
         "genres": "strategy",
         "tags": "multiplayer",
         "metacritic": "80,100",
         "page_size": 10
     }
-    response = requests.get("https://api.rawg.io/api/games", params=params)
+    response = requests.get("https://api.rawg.io/api/games", params=payload)
     return response.json()["results"]
 
 
@@ -27,9 +27,9 @@ def get_game_screenshots(game):
 
 def get_stores_for_game(game_id):
     url = f"https://api.rawg.io/api/games/{game_id}/stores"
-    params = {"key": api_key}
+    payload = {"key": api_key}
 
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=payload)
     stores = response.json()["results"]
 
     store_list = []

@@ -2,11 +2,8 @@ import requests
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-api_key = os.getenv("TOKEN")
 
-
-def get_games_list():
+def get_games_list(api_key):
     payload = {
         "key": api_key,
         "genres": "strategy",
@@ -25,7 +22,7 @@ def get_game_screenshots(game):
     return screenshots
 
 
-def get_stores_for_game(game_id):
+def get_stores_for_game(game_id, api_key):
     url = f"https://api.rawg.io/api/games/{game_id}/stores"
     payload = {"key": api_key}
 
@@ -39,10 +36,12 @@ def get_stores_for_game(game_id):
 
 
 def main():
-    games_data = get_games_list()
+    load_dotenv()
+    api_key = os.getenv("TOKEN")
+    games_data = get_games_list(api_key)
     for game in games_data:
         screenshots = get_game_screenshots(game)
-        stores = get_stores_for_game(game["id"])
+        stores = get_stores_for_game(game["id"], api_key)
 
         print(f"\nИгра: {game['name']}")
         print(f"Дата выхода: {game['released']}")
@@ -51,6 +50,7 @@ def main():
         for screenshot in screenshots:
             print(f"{screenshot}")
         print(f"Где купить:\n{stores}")
+    return api_key
 
 
 if __name__ == "__main__":
